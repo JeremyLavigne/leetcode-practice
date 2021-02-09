@@ -51,9 +51,64 @@ Constraints:
 /**
  * @param {number[]} nums1
  * @param {number[]} nums2
+ * @return {number[]}
+ */
+const mergeArrays = function (nums1, nums2) {
+  let nums = [];
+
+  while (nums1.length > 0 || nums2.length > 0) {
+    if (nums1.length === 0) {
+      nums = nums.concat(nums2);
+      break;
+    }
+    if (nums2.length === 0) {
+      nums = nums.concat(nums1);
+      break;
+    }
+
+    if (nums1[0] <= nums2[0]) {
+      nums.push(nums1[0]);
+      nums1.splice(0, 1);
+    } else {
+      nums.push(nums2[0]);
+      nums2.splice(0, 1);
+    }
+  }
+
+  return nums;
+};
+
+/**
+ * @param {number[]} nums
  * @return {number}
  */
-var findMedianSortedArrays = function (nums1, nums2) {};
+const findMedian = function (nums) {
+  if (nums.length === 0) {
+    return 0;
+  }
+
+  const middle = (nums.length - 1) / 2;
+
+  if ((nums.length - 1) % 2 === 0) {
+    return nums[middle];
+  } else {
+    const medianBefore = nums[Math.floor(middle)];
+    const medianAfter = nums[Math.floor(middle + 1)];
+    return (medianAfter + medianBefore) / 2;
+  }
+};
+
+/**
+ * @param {number[]} nums1
+ * @param {number[]} nums2
+ * @return {number}
+ */
+const findMedianSortedArrays = function (nums1, nums2) {
+  const nums = mergeArrays(nums1, nums2);
+  const median = findMedian(nums);
+
+  return Math.round(median * 10000) / 10000;
+};
 
 // ============================================================================================
 
