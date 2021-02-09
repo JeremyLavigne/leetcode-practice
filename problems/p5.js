@@ -38,9 +38,42 @@ Constraints:
 
 /**
  * @param {string} s
+ * @return {boolean}
+ */
+const isPalindrome = function (s) {
+  const l = s.length;
+  for (let i = 0; i < l; i += 1) {
+    if (!(s[i] === s[l - 1 - i])) {
+      return false;
+    }
+    if (i > l / 2) {
+      break;
+    }
+  }
+
+  return true;
+};
+
+/**
+ * @param {string} s
  * @return {string}
  */
-var longestPalindrome = function (s) {};
+const longestPalindrome = function (s) {
+  let longest = "";
+
+  for (let i = 0; i < s.length; i += 1) {
+    for (let j = s.length; j > 0; j -= 1) {
+      // Too much tests here...
+      const testString = s.substr(i, j);
+
+      if (isPalindrome(testString) && testString.length > longest.length) {
+        longest = testString;
+      }
+    }
+  }
+
+  return longest;
+};
 
 // ============================================================================================
 
