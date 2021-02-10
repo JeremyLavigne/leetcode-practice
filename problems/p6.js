@@ -50,10 +50,55 @@ Constraints:
  * @param {number} numRows
  * @return {string}
  */
-var convert = function (s, numRows) {};
+const convert = function (s, numRows) {
+  let newString = "";
+
+  if (numRows === 1) {
+    return s;
+  }
+  if (numRows === 2) {
+    for (let k = 0; k < s.length; k += 2) {
+      newString += s[k];
+    }
+    for (let l = 1; l < s.length; l += 2) {
+      newString += s[l];
+    }
+    return newString;
+  }
+
+  for (let i = 0; i < numRows; i += 1) {
+    let count = 0;
+    let indexBefore = Math.floor(numRows * 1.5) * count - i;
+    let indexAfter = Math.floor(numRows * 1.5) * count + i;
+
+    while (indexBefore < s.length) {
+      console.log(indexBefore, indexAfter);
+      if (newString.length === s.length) {
+        break;
+      }
+
+      if (i !== 0 && i !== numRows - 1) {
+        if (indexBefore >= 0 && indexBefore < s.length) {
+          newString += s[indexBefore];
+        }
+      }
+
+      if (indexAfter >= 0 && indexAfter < s.length) {
+        newString += s[indexAfter];
+      }
+
+      count += 1;
+      indexBefore = Math.floor(numRows * 1.5) * count - i;
+      indexAfter = Math.floor(numRows * 1.5) * count + i;
+    }
+  }
+
+  return newString;
+};
 
 // ============================================================================================
 
 console.log(convert("PAYPALISHIRING", 3)); // Expected : 'PAHNAPLSIIGYIR'
 console.log(convert("PAYPALISHIRING", 4)); // Expected : 'PINALSIGYAHRPI'
 console.log(convert("A", 1)); // Expected : 'A'
+console.log(convert("ABC", 5)); // Expected : 'ACB'
