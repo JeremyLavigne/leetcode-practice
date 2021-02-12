@@ -5,12 +5,13 @@ Implement the myAtoi(string s) function, which converts a string to a 32-bit sig
 
 The algorithm for myAtoi(string s) is as follows:
 
-Read in and ignore any leading whitespace.
-Check if the next character (if not already at the end of the string) is '-' or '+'. Read this character in if it is either. This determines if the final result is negative or positive respectively. Assume the result is positive if neither is present.
-Read in next the characters until the next non-digit charcter or the end of the input is reached. The rest of the string is ignored.
-Convert these digits into an integer (i.e. "123" -> 123, "0032" -> 32). If no digits were read, then the integer is 0. Change the sign as necessary (from step 2).
-If the integer is out of the 32-bit signed integer range [-231, 231 - 1], then clamp the integer so that it remains in the range. Specifically, integers less than -231 should be clamped to -231, and integers greater than 231 - 1 should be clamped to 231 - 1.
-Return the integer as the final result.
+ (1) Read in and ignore any leading whitespace.
+ (2) Check if the next character (if not already at the end of the string) is '-' or '+'. Read this character in if it is either. This determines if the final result is negative or positive respectively. Assume the result is positive if neither is present.
+ (3) Read in next the characters until the next non-digit charcter or the end of the input is reached. The rest of the string is ignored.
+ (4) Convert these digits into an integer (i.e. "123" -> 123, "0032" -> 32). If no digits were read, then the integer is 0. Change the sign as necessary (from step 2).
+ (5) If the integer is out of the 32-bit signed integer range [-231, 231 - 1], then clamp the integer so that it remains in the range. Specifically, integers less than -231 should be clamped to -231, and integers greater than 231 - 1 should be clamped to 231 - 1.
+ (6) Return the integer as the final result.
+
 Note:
 
 Only the space character ' ' is considered a whitespace character.
@@ -99,9 +100,52 @@ Constraints:
 
 /**
  * @param {string} s
+ * @return {string}
+ */
+const extractDigits = function (s) {
+  let onlyDigits = "";
+  let index = 0;
+
+  while (!isNaN(s[index])) {
+    if (s[index] === " ") {
+      break;
+    }
+    onlyDigits += s[index];
+    index += 1;
+  }
+
+  return onlyDigits;
+};
+
+/**
+ * @param {string} s
  * @return {number}
  */
-var myAtoi = function (s) {};
+const myAtoi = function (s) {
+  s = s.trim();
+
+  let onlyDigits = "";
+  if (s[0] === "-") {
+    onlyDigits = -extractDigits(s.substr(1));
+  } else if (s[0] === "+") {
+    onlyDigits = extractDigits(s.substr(1));
+  } else {
+    onlyDigits = extractDigits(s);
+  }
+
+  const number = parseInt(onlyDigits);
+  if (isNaN(number)) {
+    return 0;
+  }
+  if (number > Math.pow(2, 31) - 1) {
+    return Math.pow(2, 31) - 1;
+  }
+  if (number < -Math.pow(2, 31)) {
+    return -Math.pow(2, 31);
+  }
+
+  return number;
+};
 
 // ============================================================================================
 
@@ -110,3 +154,4 @@ console.log(myAtoi("   -42")); // Expeccted -42
 console.log(myAtoi("4193 with words")); // Expeccted 4193
 console.log(myAtoi("words and 987")); // Expeccted 0
 console.log(myAtoi("-91283472332")); // Expeccted -2147483648
+console.log(myAtoi("    -88827   5655  U")); // Expeccted -88827
