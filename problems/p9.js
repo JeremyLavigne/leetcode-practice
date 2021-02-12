@@ -40,14 +40,41 @@ Follow up: Could you solve it without converting the integer to a string?
 // ============================================================================================
 
 /**
+ * @param {string} s
+ * @return {boolean}
+ */
+const isPalindromeStr = function (s) {
+  const l = s.length;
+  for (let i = 0; i < l; i += 1) {
+    if (!(s[i] === s[l - 1 - i])) {
+      return false;
+    }
+    if (i > l / 2) {
+      break;
+    }
+  }
+
+  return true;
+};
+
+/**
  * @param {number} x
  * @return {boolean}
  */
-var isPalindrome = function (x) {};
+var isPalindrome = function (x) {
+  if (x < 0 || (x !== 0 && x % 10 === 0)) {
+    return false;
+  }
+  if (x < 10) {
+    return true;
+  }
+
+  return isPalindromeStr(x.toString());
+};
 
 // ============================================================================================
 
 console.log(isPalindrome(121)); // Expected true
 console.log(isPalindrome(-121)); // Expected false
-console.log(isPalindrome(10)); // Expected false
+console.log(isPalindrome(0)); // Expected false
 console.log(isPalindrome(-101)); // Expected false
