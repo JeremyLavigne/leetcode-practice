@@ -56,11 +56,38 @@ Constraints:
  * @param {string} p
  * @return {boolean}
  */
-var isMatch = function (s, p) {};
+const isMatch = function (s, p) {
+  // const letters = ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'];
+
+  const allPossibilities = [];
+
+  if (p === ".*") {
+    // Avoid this case
+    return true;
+  }
+
+  for (let i = 0; i < p.length; i += 1) {
+    if (p[i] !== "*") {
+      // * is always considered with the previous character
+      if (p[i] !== ".") {
+        // Don't know how to manage it for now
+        if (i + 1 < p.length && p[i + 1] !== "*") {
+          // Character should be add to previous possibilities
+          allPossibilities.push(p[i]);
+        } else {
+          // Add 20 (s max length) possibilities : 'a', 'aa', 'aaa', ...
+          // Sounds not a efficient way..
+        }
+      }
+    }
+  }
+
+  return allPossibilities.includes(s);
+};
 
 // ============================================================================================
 
 console.log(isMatch("aa", "a")); // Expected false
 console.log(isMatch("aa", "a*")); // Expected true
-console.log(isMatch("ab", ".*")); // Expected false
+console.log(isMatch("ab", ".*")); // Expected true
 console.log(isMatch("aab", "c*a*b")); // Expected true
