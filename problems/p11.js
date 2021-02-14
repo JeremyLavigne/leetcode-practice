@@ -43,7 +43,21 @@ Constraints:
  * @param {number[]} height
  * @return {number}
  */
-const maxArea = function (height) {};
+const maxArea = function (height) {
+  let max = 0;
+
+  for (let i = 0; i < height.length - 1; i += 1) {
+    for (let j = i + 1; j < height.length; j += 1) {
+      const area = (j - i) * Math.min(height[j], height[i]);
+
+      if (area > max) {
+        max = area;
+      }
+    }
+  }
+
+  return max;
+};
 
 // ============================================================================================
 
