@@ -61,12 +61,134 @@ Constraints:
  * @param {number} num
  * @return {string}
  */
-const intToRoman = function (num) {};
+const convertMill = function (num) {
+  switch (num) {
+    case 1:
+      return "M";
+    case 2:
+      return "MM";
+    case 3:
+      return "MMM";
+    default:
+      return "";
+  }
+};
+
+/**
+ * @param {number} num
+ * @return {string}
+ */
+const convertCent = function (num) {
+  switch (num) {
+    case 1:
+      return "C";
+    case 2:
+      return "CC";
+    case 3:
+      return "CCC";
+    case 4:
+      return "CD";
+    case 5:
+      return "D";
+    case 6:
+      return "DC";
+    case 7:
+      return "DCC";
+    case 8:
+      return "DCCC";
+    case 9:
+      return "CM";
+    default:
+      return "";
+  }
+};
+
+/**
+ * @param {number} num
+ * @return {string}
+ */
+const convertDiz = function (num) {
+  switch (num) {
+    case 1:
+      return "X";
+    case 2:
+      return "XX";
+    case 3:
+      return "XXX";
+    case 4:
+      return "XL";
+    case 5:
+      return "L";
+    case 6:
+      return "LX";
+    case 7:
+      return "LXX";
+    case 8:
+      return "LXXX";
+    case 9:
+      return "XC";
+    default:
+      return "";
+  }
+};
+
+/**
+ * @param {number} num
+ * @return {string}
+ */
+const convertUnits = function (num) {
+  switch (num) {
+    case 1:
+      return "I";
+    case 2:
+      return "II";
+    case 3:
+      return "III";
+    case 4:
+      return "IV";
+    case 5:
+      return "V";
+    case 6:
+      return "VI";
+    case 7:
+      return "VII";
+    case 8:
+      return "VIII";
+    case 9:
+      return "IX";
+    default:
+      return "";
+  }
+};
+
+/**
+ * @param {number} num
+ * @return {string}
+ */
+const intToRoman = function (num) {
+  let romanStr = "";
+
+  const units = num % 10;
+  const dizaines = num >= 10 ? ((num - units) / 10) % 10 : 0;
+  const centaines = num >= 100 ? ((num - 10 * dizaines - units) / 100) % 10 : 0;
+  const mill =
+    num >= 1000
+      ? ((num - 100 * centaines - 10 * dizaines - units) / 1000) % 10
+      : 0;
+  console.log(dizaines, units);
+
+  romanStr += convertMill(mill);
+  romanStr += convertCent(centaines);
+  romanStr += convertDiz(dizaines);
+  romanStr += convertUnits(units);
+
+  return romanStr;
+};
 
 // ============================================================================================
 
 console.log(intToRoman(3)); // Expected III
-console.log(intToRoman(4)); // Expected IV
+console.log(intToRoman(10)); // Expected X
 console.log(intToRoman(9)); // Expected IX
 console.log(intToRoman(58)); // Expected LVIII
 console.log(intToRoman(1994)); // Expected MCMXCIV

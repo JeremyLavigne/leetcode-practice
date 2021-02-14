@@ -62,15 +62,164 @@ Constraints:
 // ============================================================================================
 
 /**
+ * @param {string} single
+ * @return {number}
+ */
+const convertSingle = function (single) {
+  switch (single) {
+    case "I":
+    case "X":
+    case "C":
+    case "M":
+      return 1;
+    case "II":
+    case "XX":
+    case "CC":
+    case "MM":
+      return 2;
+    case "III":
+    case "XXX":
+    case "CCC":
+    case "MMM":
+      return 3;
+    case "IV":
+    case "XL":
+    case "CD":
+      return 4;
+    case "V":
+    case "L":
+    case "D":
+      return 5;
+    case "VI":
+    case "LX":
+    case "DC":
+      return 6;
+    case "VII":
+    case "LXX":
+    case "DCC":
+      return 7;
+    case "VIII":
+    case "LXXX":
+    case "DCCC":
+      return 8;
+    case "IX":
+    case "XC":
+    case "CM":
+      return 9;
+    default:
+      return 0;
+  }
+};
+
+/**
  * @param {string} s
  * @return {number}
  */
-const romanToInt = function (s) {};
+const romanToInt = function (s) {
+  let expected = 0;
+
+  let mill = "";
+  let centaines = "";
+  let dizaines = "";
+
+  for (let i = 0; i < s.length; i += 1) {
+    if (
+      s[i] === "D" ||
+      s[i] === "C" ||
+      s[i] === "L" ||
+      s[i] === "X" ||
+      s[i] === "V" ||
+      s[i] === "I"
+    ) {
+      mill = s.substr(0, i);
+
+      for (let j = 0; j < mill.length; j += 1) {
+        if (mill[j] !== "M") {
+          mill = "";
+          break;
+        }
+      }
+
+      if (mill.length > 0) {
+        s = s.substr(i);
+      }
+      break;
+    }
+    if (
+      i === s.length - 1 &&
+      s[i] !== "L" &&
+      s[i] !== "X" &&
+      s[i] !== "V" &&
+      s[i] !== "I"
+    ) {
+      mill = s;
+      s = "";
+    }
+  }
+
+  for (let i = 0; i < s.length; i += 1) {
+    if (s[i] === "L" || s[i] === "X" || s[i] === "V" || s[i] === "I") {
+      centaines = s.substr(0, i);
+
+      for (let j = 0; j < centaines.length; j += 1) {
+        if (
+          centaines[j] !== "C" &&
+          centaines[j] !== "D" &&
+          centaines[j] !== "M"
+        ) {
+          centaines = "";
+        }
+      }
+
+      if (centaines.length > 0) {
+        s = s.substr(i);
+      }
+      break;
+    }
+    if (i === s.length - 1 && s[i] !== "V" && s[i] !== "I") {
+      centaines = s;
+      s = "";
+    }
+  }
+
+  for (let i = 0; i < s.length; i += 1) {
+    if (s[i] === "V" || s[i] === "I") {
+      dizaines = s.substr(0, i);
+
+      for (let j = 0; j < dizaines.length; j += 1) {
+        if (dizaines[j] !== "X" && dizaines[j] !== "L" && dizaines[j] !== "C") {
+          dizaines = "";
+          break;
+        }
+      }
+
+      if (dizaines.length > 0) {
+        s = s.substr(i);
+      }
+      break;
+    }
+    if (i === s.length - 1) {
+      dizaines = s;
+      s = "";
+    }
+  }
+
+  const units = s;
+
+  // console.log("m", mill, "c", centaines, "d", dizaines, "u", units);
+
+  expected += 1000 * convertSingle(mill);
+  expected += 100 * convertSingle(centaines);
+  expected += 10 * convertSingle(dizaines);
+  expected += convertSingle(units);
+
+  return expected;
+};
 
 // ============================================================================================
 
-console.log(romanToInt("III")); // Expected 3
+console.log(romanToInt("MMCCCVII")); // Expected 2307
 console.log(romanToInt("IV")); // Expected 4
 console.log(romanToInt("IX")); // Expected 9
 console.log(romanToInt("LVIII")); // Expected 58
-console.log(romanToInt("MCMXCIV")); // Expected MCMXCIV
+console.log(romanToInt("MCMXCIV")); // Expected 1994
