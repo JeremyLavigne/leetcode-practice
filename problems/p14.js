@@ -33,7 +33,32 @@ Constraints:
  * @param {string[]} strs
  * @return {string}
  */
-const longestCommonPrefix = function (strs) {};
+const longestCommonPrefix = function (strs) {
+  if (strs.length === 0) {
+    return "";
+  }
+  if (strs.length === 1) {
+    return strs[0];
+  }
+
+  const reference = strs[0];
+  let commonPrefix = "";
+  let stopLoop = false;
+
+  for (let i = 0; i < reference.length; i += 1) {
+    for (let j = 1; j < strs.length; j += 1) {
+      if (reference[i] !== strs[j][i]) {
+        stopLoop = true;
+      }
+    }
+    if (stopLoop) {
+      break;
+    }
+    commonPrefix += reference[i];
+  }
+
+  return commonPrefix;
+};
 
 // ============================================================================================
 
