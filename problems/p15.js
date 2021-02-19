@@ -35,7 +35,53 @@ Constraints:
  * @param {number[]} nums
  * @return {number[][]}
  */
-const threeSum = function (nums) {};
+const threeSum = function (nums) {
+  if (nums.length < 2) {
+    return [];
+  }
+
+  // Reduce nums.length -  No need more than 3 of each number
+  const reducedNums = [];
+  for (let i = 0; i < nums.length; i += 1) {
+    const numToCheck = nums[i];
+    let count = 0;
+    for (let j = 0; j < reducedNums.length; j += 1) {
+      if (reducedNums[j] === numToCheck) {
+        count += 1;
+      }
+    }
+    if (count <= 2) {
+      reducedNums.push(numToCheck);
+    }
+  }
+
+  let triplets = [];
+  nums = reducedNums;
+
+  for (let i = 0; i < nums.length - 2; i += 1) {
+    for (let j = i + 1; j < nums.length - 1; j += 1) {
+      for (let k = j + 1; k < nums.length; k += 1) {
+        if (nums[i] + nums[j] + nums[k] === 0) {
+          const newTriplet = [nums[i], nums[j], nums[k]];
+          newTriplet.sort();
+          const tripletAsString = JSON.stringify(newTriplet);
+
+          if (!triplets.includes(tripletAsString)) {
+            triplets.push(tripletAsString);
+          }
+        }
+      }
+    }
+  }
+
+  const tripletsFinal = [];
+  for (let i = 0; i < triplets.length; i += 1) {
+    // Back to Array
+    tripletsFinal.push(JSON.parse(triplets[i]));
+  }
+
+  return tripletsFinal;
+};
 
 // ============================================================================================
 
